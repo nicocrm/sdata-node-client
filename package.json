@@ -1,0 +1,31 @@
+{
+  "name": "sdata-js",
+  "version": "1.0.0",
+  "description": "Helpers for accessing SData services from node.js programs",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngaller/sdata-js.git"
+  },
+  "keywords": [
+    "sdata",
+    "saleslogix"
+  ],
+  "author": "Nicolas Galler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngaller/sdata-js/issues"
+  },
+  "homepage": "https://github.com/ngaller/sdata-js",
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "mocha": "^2.2.4",
+    "request": "^2.55.0"
+  },
+  "dependencies": {
+    "jsonic": "^0.1.2"
+  }
+}
