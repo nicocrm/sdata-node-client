@@ -3,7 +3,6 @@
 'use strict';
 
 var requestBase = require('request'),
-    jsonic = require('jsonic'),
     util = require('util');
 
 function SDataService(sdataUri, username, password) {

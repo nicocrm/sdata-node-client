@@ -4,7 +4,7 @@
   "description": "Helpers for accessing SData services from node.js programs",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint"
+    "test": "mocha tests"
   },
   "repository": {
     "type": "git",
