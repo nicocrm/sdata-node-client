@@ -1,5 +1,5 @@
 {
-  "name": "sdata-js",
+  "name": "sdata-node-client",
   "version": "1.0.0",
   "description": "Helpers for accessing SData services from node.js programs",
   "main": "index.js",
@@ -22,10 +22,9 @@
   "homepage": "https://github.com/ngaller/sdata-js",
   "devDependencies": {
     "chai": "^2.2.0",
-    "mocha": "^2.2.4",
-    "request": "^2.55.0"
+    "mocha": "^2.2.4"
   },
   "dependencies": {
-    "jsonic": "^0.1.2"
+    "request": "^2.55.0"
   }
 }
