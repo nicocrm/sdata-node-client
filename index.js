@@ -28,7 +28,7 @@ function SDataService(sdataUri, username, password) {
             //  resourceKind
             //  where
             //  queryArgs (optional) object with properties to be added to the request (e.g. {select: 'AccountName'})
-            //  callback: function(data,error):
+            //  callback: function(error, data):
             //     - if the call is successful, will be called with data
             //     - if there is an error, will be called with an error object with the properties:
             //                 message: description of the error (first error message returned from sdata if available)
@@ -123,7 +123,7 @@ function SDataService(sdataUri, username, password) {
     function handleSdataResponse(expectedStatusCode, callback) {
         return function (e, r, body) {
             if (!e && r.statusCode == expectedStatusCode) {
-                callback(body);
+                callback(null, body);
             } else {
                 var error;
                 if(!r)
@@ -138,7 +138,7 @@ function SDataService(sdataUri, username, password) {
                     error.statusCode = r.statusCode;
                 }
                 
-                callback(null, error);
+                callback(error, null);
             }
         }
     }

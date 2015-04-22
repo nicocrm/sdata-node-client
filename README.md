@@ -18,11 +18,11 @@ Example usage
 
     var sdataProvider = require('sdata-client');
     var sdata = sdataProvider('http://localhost/sdata/slx/dynamic/-/', 'admin', '');
-    sdata.read('accounts', 'AccountName like \'A%\'', function(data, error) {
+    sdata.read('accounts', 'AccountName like \'A%\'', function(error, data) {
 
     });
     
-    sdata.read('accounts', 'AccountName like \'A%\'', { include: 'Address,Contacts' }, function(data, error) {
+    sdata.read('accounts', 'AccountName like \'A%\'', { include: 'Address,Contacts' }, function(error, data) {
 
     });
 
@@ -41,6 +41,7 @@ Example usage
 ### Error handling
 
     var sdata = require('sdata-client')(url, 'admin', '');
-    sdata.read('accounts', 'SomeInvalidQueryParam eq \'\'', function(data, error) {
-        console.warn('SDATA ERROR: ' + error.message);
+    sdata.read('accounts', 'SomeInvalidQueryParam eq \'\'', function(error, data) {
+        if(error) 
+            console.warn('SDATA ERROR: ' + error.message);
     });

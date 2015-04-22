@@ -9,7 +9,7 @@ describe('sdata service - tests using actual SData server', function() {
     this.timeout(5000);
     
     it('should retrieve accounts', function(done) {
-        sdata.read('accounts', 'AccountName like \'A%\'', { select: 'AccountName,Address/City' }, function(data, error) {
+        sdata.read('accounts', 'AccountName like \'A%\'', { select: 'AccountName,Address/City' }, function(error, data) {
             expect(error).to.not.be.ok;
             expect(data).to.be.ok;
             expect(data).to.have.property('$totalResults');
@@ -21,14 +21,14 @@ describe('sdata service - tests using actual SData server', function() {
     });
     it('should return error when querying an unavailable site', function(done) {
         var sdata2 = sdataProvider('http://invaliddomainnameXXXX.com');
-        sdata2.read('accounts', 'AccountName like \'\'', function(data, error) {
+        sdata2.read('accounts', 'AccountName like \'\'', function(error, data) {
             expect(error).to.be.ok;
             done();
         });
     });
     it('should return error when authentication is not valid', function(done) {
         var sdata = sdataProvider(SDATA_TEST_URL);
-        sdata.read('accounts', 'AccountName like \'\'', function(data, error) {
+        sdata.read('accounts', 'AccountName like \'\'', function(error, data) {
             expect(error).to.be.ok;
             expect(error.statusCode).to.equal(401);
             done();
@@ -38,7 +38,7 @@ describe('sdata service - tests using actual SData server', function() {
         var acc = {
             AccountName: 'Foo'
         };
-        sdata.create('accounts', acc, function(data, error) {
+        sdata.create('accounts', acc, function(error, data) {
             expect(error).to.not.be.ok;
             expect(data).to.be.ok;
             expect(data).to.have.property('$key');
@@ -49,11 +49,11 @@ describe('sdata service - tests using actual SData server', function() {
         var acc = {
             AccountName: 'Foo'
         };
-        sdata.create('accounts', acc, function(data, error) {
+        sdata.create('accounts', acc, function(error, data) {
             sdata.update('accounts', {
                 '$key': data.$key,
                 AccountName: 'Foo++'
-            }, function(data, error) {
+            }, function(error, data) {
                 expect(error).to.not.be.ok;
                 expect(data.AccountName).to.equal('Foo++');                
                 done();
@@ -64,8 +64,8 @@ describe('sdata service - tests using actual SData server', function() {
         var acc = {
             AccountName: 'Foo'
         };
-        sdata.create('accounts', acc, function(data, error) {
-            sdata.destroy('accounts', data.$key, function(data, error) {
+        sdata.create('accounts', acc, function(error, data) {
+            sdata.destroy('accounts', data.$key, function(error, data) {
                 expect(error).to.not.be.ok;
                 expect(data).to.be.undefined;
                 done();
