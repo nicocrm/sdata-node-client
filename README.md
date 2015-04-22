@@ -6,6 +6,11 @@ Overview
 
 Very simple library facilitating SData calls from a node app.
 
+Installing
+----------
+
+npm install sdata-client
+
 Example usage
 -------------
 
