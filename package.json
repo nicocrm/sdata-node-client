@@ -1,6 +1,6 @@
 {
   "name": "sdata-client",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Helpers for accessing SData services from node.js programs",
   "main": "index.js",
   "scripts": {
