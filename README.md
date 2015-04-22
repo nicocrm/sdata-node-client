@@ -25,6 +25,14 @@ Example usage
     sdata.read('accounts', 'AccountName like \'A%\'', { include: 'Address,Contacts' }, function(error, data) {
 
     });
+    
+### Updating
+    var sdata = require('sdata-client')(url, 'admin', '');
+    sdata.update('accounts', { '$key': 'Axxxxxxx', AccountName: 'Foo' }, function(error, data) { ... });
+    sdata.create('accounts', { AccountName: 'Foo' }, function(error, data) { ... });
+    // this one will call create if the $key is missing, update otherwise
+    sdata.upsert('accounts', { '$key': 'Axxxxxxx', AccountName: 'Foo' }, function(error, data) { ... });
+    sdata.delete('accounts', 'Axxxxxxx', function(error) { ... } );
 
 ### Passing username / password
 

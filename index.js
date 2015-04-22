@@ -80,8 +80,15 @@ function SDataService(sdataUri, username, password) {
                 body: data
             }, handleSdataResponse(200, callback));            
         },
+        
+        upsert: function(resourceKind, data, callback) {
+            // summary:
+            //  Convenience method combining insert + update.
+            //  If the data has a $key property, update will be called, otherwise insert.
+            (data.$key ? service.update : service.insert)(resourceKind, data, callback);            
+        },
 
-        destroy: function (resourceKind, key, callback) {
+        remove: function (resourceKind, key, callback) {
             // summary:
             //  delete designated resource.
             // Note that when invoked successfully the callback will not be passed any data.
