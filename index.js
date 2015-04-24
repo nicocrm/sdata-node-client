@@ -85,10 +85,10 @@ function SDataService(sdataUri, username, password) {
             // summary:
             //  Convenience method combining insert + update.
             //  If the data has a $key property, update will be called, otherwise insert.
-            (data.$key ? service.update : service.insert)(resourceKind, data, callback);            
+            (data.$key ? service.update : service.create)(resourceKind, data, callback);            
         },
 
-        remove: function (resourceKind, key, callback) {
+        delete: function (resourceKind, key, callback) {
             // summary:
             //  delete designated resource.
             // Note that when invoked successfully the callback will not be passed any data.
@@ -116,7 +116,13 @@ function SDataService(sdataUri, username, password) {
                 method: 'POST',
                 uri: url,
                 body: payload
-            }, handleSdataResponse(200, callback));            
+            }, function(err, r, body) {
+                if(!err && body && body.response)
+                    // get the inside response, for business rule calls
+                    callback(null, body.response);
+                else
+                    handleSdataResponse(200, callback)(err, r, body);
+            });
         }
     };
 
@@ -129,7 +135,10 @@ function SDataService(sdataUri, username, password) {
 
     function handleSdataResponse(expectedStatusCode, callback) {
         return function (e, r, body) {
-            if (!e && r.statusCode == expectedStatusCode) {
+            if(!callback)
+                return;
+            
+            if (!e && r.statusCode == expectedStatusCode) {                
                 callback(null, body);
             } else {
                 var error;

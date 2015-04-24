@@ -42,6 +42,7 @@ describe('sdata service - tests using actual SData server', function() {
             expect(error).to.not.be.ok;
             expect(data).to.be.ok;
             expect(data).to.have.property('$key');
+            sdata.delete('accounts', data.$key);
             done();
         });
     });
@@ -56,16 +57,28 @@ describe('sdata service - tests using actual SData server', function() {
             }, function(error, data) {
                 expect(error).to.not.be.ok;
                 expect(data.AccountName).to.equal('Foo++');                
+                sdata.delete('accounts', data.$key);  // cleanup
                 done();
             });
         });
     });    
+    it('should create accounts using upsert', function(done) {
+        var acc = {
+            AccountName: 'Foo'
+        };
+        sdata.upsert('accounts', acc, function(error, data) {
+            expect(error).to.not.be.ok;
+            expect(data.$key).to.be.ok;
+            sdata.delete('accounts', data.$key); // cleanup
+            done();
+        });
+    });
     it('should delete accounts', function(done) {
         var acc = {
             AccountName: 'Foo'
         };
         sdata.create('accounts', acc, function(error, data) {
-            sdata.destroy('accounts', data.$key, function(error, data) {
+            sdata.delete('accounts', data.$key, function(error, data) {
                 expect(error).to.not.be.ok;
                 expect(data).to.be.undefined;
                 done();
@@ -73,5 +86,17 @@ describe('sdata service - tests using actual SData server', function() {
         });        
     });
     it('should call a business rule', function(done) {
+        var acc = {
+            AccountName: 'Foo'
+        };
+        sdata.create('accounts', acc, function(error, data) {
+            expect(error).to.not.be.ok;            
+            sdata.callBusinessRule('accounts', 'CanChangeOwner', data.$key, null, function(error, data) {
+                expect(error).to.not.be.ok;
+                expect(data.Result).to.be.true;
+                sdata.delete('accounts', data.$key); // cleanup
+                done();
+            });            
+        });
     });
 });
