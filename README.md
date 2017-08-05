@@ -19,13 +19,15 @@ Example usage
     var sdataProvider = require('sdata-client');
     var sdata = sdataProvider('http://localhost/sdata/slx/dynamic/-/', 'admin', '');
     sdata.read('accounts', 'AccountName like \'A%\'', function(error, data) {
-
+      // retrieve accounts from data.$resources
+      // other sdata fields are available in data
     });
-    
+
+    // can pass additional parameters for the query
     sdata.read('accounts', 'AccountName like \'A%\'', { include: 'Address,Contacts' }, function(error, data) {
 
     });
-    
+
 ### Updating
     var sdata = require('sdata-client')(url, 'admin', '');
     sdata.update('accounts', { '$key': 'Axxxxxxx', AccountName: 'Foo' }, function(error, data) { ... });
@@ -40,8 +42,8 @@ Example usage
 
     var sdataProvider = require('sdata-client');
     var sdata = sdataProvider('http://localhost/sdata/slx/dynamic/-/', 'admin', '');
-    
-#### After the fact    
+
+#### After the fact
 
     var sdata = require('sdata-client')(url);
     sdata.setAuthenticationParameters('admin', '');
@@ -50,7 +52,7 @@ Example usage
 
     var sdata = require('sdata-client')(url, 'admin', '');
     sdata.read('accounts', 'SomeInvalidQueryParam eq \'\'', function(error, data) {
-        if(error) 
+        if(error)
             console.warn('SDATA ERROR: ' + error.message);
     });
 

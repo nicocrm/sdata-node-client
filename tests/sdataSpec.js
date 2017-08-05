@@ -21,6 +21,20 @@ describe('sdata service - tests using actual SData server', function() {
       done();
     });
   });
+  it('should retrieve multiple pages of accounts', function(done) {
+    const result = sdata.readPaged('accounts', 'AccountName like \'A%\'', {
+      select: 'AccountName,Address/City', count: 10
+    })
+    let readCount = 0
+    result.on('data', rec => {
+      readCount++
+      if(readCount === 20)
+        done()
+    })
+    result.on('end', () => {
+      done('we should have read more records')
+    })
+  })
   it('should return error when querying an unavailable site', function(done) {
     var sdata2 = sdataProvider('http://invaliddomainnameXXXX.com');
     sdata2.read('accounts', 'AccountName like \'\'', function(error, data) {

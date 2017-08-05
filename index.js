@@ -3,7 +3,8 @@
 'use strict';
 
 var requestBase = require('request-promise-native'),
-  util = require('util');
+  util = require('util'),
+  FindStream = require('./lib/FindStream')
 
 function SDataService(sdataUri, username, password) {
   var _request = requestBase;
@@ -35,12 +36,14 @@ function SDataService(sdataUri, username, password) {
       //                 message: description of the error (first error message returned from sdata if available)
       //                 errors: populated with errors returned from sdata, if any
       //                 statusCode: http status code, if available
+      // returns:
+      //  Promise
 
-      var url = sdataUri + resourceKind + '?format=json';
+      var url = sdataUri + resourceKind + '?format=json'
       if (where) {
         // this must be encoded explicitly because Angular will encode a space to a + (conforming to RFC)
         // which sdata cannot parse
-        url += '&where=' + encodeURIComponent(where);
+        url += '&where=' + encodeURIComponent(where)
       }
       if (queryArgs) {
         if (typeof (queryArgs) == 'function' && !callback) {
@@ -54,6 +57,28 @@ function SDataService(sdataUri, username, password) {
       }
 
       return handleSdataResponse(_request.get(url), 200, callback)
+    },
+
+    readPaged: function(resourceKind, where, queryArgs) {
+      // summary:
+      //  Retrieve SData resources matching the specified criteria, and automatically
+      //  requests multiple pages of data
+      // parameters:
+      //  resourceKind
+      //  where
+      //  queryArgs (optional) object with properties to be added to the request (e.g. {select: 'AccountName'})
+      // returns:
+      //  stream of records
+      let url = sdataUri + resourceKind + '?format=json'
+      if (where) {
+        url += '&where=' + encodeURIComponent(where);
+      }
+      if (queryArgs) {
+        Object.keys(queryArgs).forEach(k => {
+          url += '&' + k + '=' + encodeURIComponent(queryArgs[k]);
+        })
+      }
+      return new FindStream(_request, url)
     },
 
     create: function (resourceKind, data, callback) {
