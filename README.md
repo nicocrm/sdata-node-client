@@ -53,3 +53,8 @@ Example usage
         if(error) 
             console.warn('SDATA ERROR: ' + error.message);
     });
+
+Usage with promises
+-------------------
+
+When a callback is not provided to the sdata method, it will return a promise instead.
