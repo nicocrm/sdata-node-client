@@ -4,7 +4,8 @@
 
 var requestBase = require('request-promise-native'),
   util = require('util'),
-  FindStream = require('./lib/FindStream')
+  FindStream = require('./lib/FindStream'),
+  debug = require('debug')('sdata')
 
 function SDataService(sdataUri, username, password) {
   var _request = requestBase;
@@ -78,6 +79,7 @@ function SDataService(sdataUri, username, password) {
           url += '&' + k + '=' + encodeURIComponent(queryArgs[k]);
         })
       }
+      debug('readPaged: using URL: ' + url)
       return new FindStream(_request, url)
     },
 
