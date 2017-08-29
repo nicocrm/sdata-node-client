@@ -5,6 +5,7 @@
 var requestBase = require('request-promise-native'),
   util = require('util'),
   FindStream = require('./lib/FindStream'),
+  convertSDataError = require('./lib/convertSDataError'),
   debug = require('debug')('sdata')
 
 function SDataService(sdataUri, username, password) {
@@ -167,15 +168,12 @@ function SDataService(sdataUri, username, password) {
     var p = requestPromise.then(function(response) {
       var body = response.body
       if(response.statusCode !== expectedStatusCode) {
-        var error = { message: 'Unknown sdata error' }
-        if(response.statusCode == 401)
-          error = { message: 'Authentication failed' }
-        else if(body && util.isArray(body))
-          error = { message: body[0].message, errors: body };
-        return Promise.reject(error)
+        return Promise.reject(convertSDataError({response}))
       } else {
         return body
       }
+    }, function(err) {
+      return Promise.reject(convertSDataError(err))
     })
     if(callback) {
       p = p.then(function(body) {

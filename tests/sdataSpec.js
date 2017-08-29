@@ -42,10 +42,12 @@ describe('sdata service - tests using actual SData server', function() {
     })
     let hasError = false
     result.on('error', err => {
-      hasError = true
+      hasError = err
     })
     result.on('end', () => {
-      expect(hasError).to.be.true
+      expect(hasError).to.be.ok
+      expect(hasError).to.be.an('error')
+      expect(hasError).to.match(/invaliddom/)
       done()
     })
     result.on('data', () => {
@@ -56,14 +58,25 @@ describe('sdata service - tests using actual SData server', function() {
     var sdata2 = sdataProvider('http://invaliddomainnameXXXX.com');
     sdata2.read('accounts', 'AccountName like \'\'', function(error, data) {
       expect(error).to.be.ok;
+      expect(error).to.be.a('error')
+      expect(error).to.match(/invaliddom/)
       done();
     });
   });
+  it('should return error message when given an invalid query', function() {
+    return sdata.read('accounts', 'XXXXX like \'\'')
+      .then(function(m) {
+        throw new Error('should not pass!')
+      }, function(e) {
+        expect(e).to.be.a('error')
+        expect(e).to.match(/could not resolve property/)
+      })
+  })
   it('should return error when authentication is not valid', function(done) {
     var sdata = sdataProvider(SDATA_TEST_URL);
     sdata.read('accounts', 'AccountName like \'\'', function(error, data) {
       expect(error).to.be.ok;
-      expect(error.statusCode).to.equal(401);
+      expect(error).to.match(/Authentication failed/i)
       done();
     });
   });

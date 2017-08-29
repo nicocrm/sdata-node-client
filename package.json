@@ -1,6 +1,6 @@
 {
   "name": "sdata-client",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Helpers for accessing SData services from node.js programs",
   "main": "index.js",
   "scripts": {
@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/ngaller/sdata-node-client",
   "devDependencies": {
-    "chai": "^2.2.0",
-    "mocha": "^2.2.4"
+    "chai": "^4.0.0",
+    "mocha": "^3.2.4"
   },
   "dependencies": {
     "debug": "^3.0.1",
