@@ -35,6 +35,23 @@ describe('sdata service - tests using actual SData server', function() {
       done('we should have read more records')
     })
   })
+  it('emits an error on the stream, if there is an sdata error', function(done) {
+    var sdata2 = sdataProvider('http://invaliddomainnameXXXX.com');
+    const result = sdata2.readPaged('accounts', 'AccountName like \'A%\'', {
+      select: 'AccountName,Address/City', count: 10
+    })
+    let hasError = false
+    result.on('error', err => {
+      hasError = true
+    })
+    result.on('end', () => {
+      expect(hasError).to.be.true
+      done()
+    })
+    result.on('data', () => {
+      done('there should be no data')
+    })
+  })
   it('should return error when querying an unavailable site', function(done) {
     var sdata2 = sdataProvider('http://invaliddomainnameXXXX.com');
     sdata2.read('accounts', 'AccountName like \'\'', function(error, data) {
