@@ -59,4 +59,4 @@ Example usage
 Usage with promises
 -------------------
 
-When a callback is not provided to the sdata method, it will return a promise instead.
+When a callback is not provided to the sdata method, it will return a promise instead (this is preferred as otherwise the callback will execute in a then block and exceptions thrown from it may not be properly handled)

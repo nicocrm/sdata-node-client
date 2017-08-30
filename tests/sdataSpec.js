@@ -21,6 +21,14 @@ describe('sdata service - tests using actual SData server', function() {
       done();
     });
   });
+  it('should use where property from queryArgs if present', function(done) {
+    sdata.read('accounts', '', { where: 'AccountName like "A%"', select: 'AccountName,Address/City' }, function(error, data) {
+      expect(error).to.not.be.ok;
+      expect(data).to.be.ok;
+      data.$resources.forEach(acc => expect(acc.AccountName).to.match(/^A/))
+      done();
+    });
+  });
   it('should retrieve multiple pages of accounts', function(done) {
     const result = sdata.readPaged('accounts', 'AccountName like \'A%\'', {
       select: 'AccountName,Address/City', count: 10

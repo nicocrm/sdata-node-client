@@ -42,7 +42,7 @@ function SDataService(sdataUri, username, password) {
       //  Promise
 
       var url = sdataUri + resourceKind + '?format=json'
-      if (where) {
+      if (where && !(queryArgs && 'where' in queryArgs)) {
         // this must be encoded explicitly because Angular will encode a space to a + (conforming to RFC)
         // which sdata cannot parse
         url += '&where=' + encodeURIComponent(where)
@@ -72,7 +72,7 @@ function SDataService(sdataUri, username, password) {
       // returns:
       //  stream of records
       let url = sdataUri + resourceKind + '?format=json'
-      if (where) {
+      if (where && !(queryArgs && 'where' in queryArgs)) {
         url += '&where=' + encodeURIComponent(where);
       }
       if (queryArgs) {
