@@ -6,7 +6,7 @@ var requestBase = require('request-promise-native'),
   util = require('util'),
   FindStream = require('./lib/FindStream'),
   convertSDataError = require('./lib/convertSDataError'),
-  debug = require('debug')('sdata')
+  debug = require('debug')('sdata:debug')
 
 function SDataService(sdataUri, username, password) {
   var _request = requestBase;
