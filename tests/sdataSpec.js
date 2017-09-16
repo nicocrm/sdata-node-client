@@ -88,6 +88,21 @@ describe('sdata service - tests using actual SData server', function() {
       done();
     });
   });
+  it('get() should return an error if the record does not exist', function(done) {
+    sdata.get('accounts', 'XXXX', function(error, data) {
+      expect(error).to.be.ok
+      expect(error).to.match(/not found/i)
+      done()
+    })
+  })
+  it('get() should read a single record', function() {
+    return sdata.read('accounts').then(function(result) {
+      return sdata.get('accounts', result.$resources[0].$key).then(function(acc) {
+        expect(acc).to.be.ok.and.to.have.property('AccountName')
+      })
+    })
+  })
+
   it('should create accounts', function(done) {
     var acc = {
       AccountName: 'Foo'

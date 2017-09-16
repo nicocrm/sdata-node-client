@@ -25,6 +25,31 @@ function SDataService(sdataUri, username, password) {
       });
     },
 
+    get: function(resourceKind, id, queryArgs, callback) {
+      // summary:
+      //  Retrieve a single record matching the specified id.
+      //  Throws an error if not found.
+      // parameters:
+      //  resourceKind
+      //  id
+      //  queryArgs (optional): eg select, include
+      //  callback: if specified this will be called with the result.
+      //  If callback is not specified, return a promise instead.
+      var url = sdataUri + resourceKind + '(\'' + id + '\')?format=json';
+      if(queryArgs) {
+        if (typeof (queryArgs) == 'function' && !callback) {
+          callback = queryArgs;
+        } else {
+          for (var k in queryArgs) {
+            if (queryArgs.hasOwnProperty(k))
+              url += '&' + k + '=' + encodeURIComponent(queryArgs[k]);
+          }
+        }
+      }
+
+      return handleSdataResponse(_request.get(url), 200, callback)
+    },
+
     read: function (resourceKind, where, queryArgs, callback) {
       // summary:
       //  Retrieve SData resources matching the specified criteria
