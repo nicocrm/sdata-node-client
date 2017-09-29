@@ -43,6 +43,19 @@ describe('sdata service - tests using actual SData server', function() {
       done('we should have read more records')
     })
   })
+  it('should retrieve multiple pages of accounts, with limit', function(done) {
+    const result = sdata.readPaged('accounts', 'AccountName like \'A%\'', {
+      select: 'AccountName,Address/City', count: 10
+    }, 20)
+    let readCount = 0
+    result.on('data', rec => {
+      readCount++
+    })
+    result.on('end', () => {
+      expect(readCount).to.equal(20)
+      done()
+    })
+  })
   it('emits an error on the stream, if there is an sdata error', function(done) {
     var sdata2 = sdataProvider('http://invaliddomainnameXXXX.com');
     const result = sdata2.readPaged('accounts', 'AccountName like \'A%\'', {

@@ -86,7 +86,7 @@ function SDataService(sdataUri, username, password) {
       return handleSdataResponse(_request.get(url), 200, callback)
     },
 
-    readPaged: function(resourceKind, where, queryArgs) {
+    readPaged: function(resourceKind, where, queryArgs, limit) {
       // summary:
       //  Retrieve SData resources matching the specified criteria, and automatically
       //  requests multiple pages of data
@@ -94,6 +94,7 @@ function SDataService(sdataUri, username, password) {
       //  resourceKind
       //  where
       //  queryArgs (optional) object with properties to be added to the request (e.g. {select: 'AccountName'})
+      //  limit: can be used to limit the max # of records returned (default is to just read everything matching)
       // returns:
       //  stream of records
       let url = sdataUri + resourceKind + '?format=json'
@@ -106,7 +107,7 @@ function SDataService(sdataUri, username, password) {
         })
       }
       debug('readPaged: using URL: ' + url)
-      return new FindStream(_request, url)
+      return new FindStream(_request, url, limit)
     },
 
     create: function (resourceKind, data, callback) {
