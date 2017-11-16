@@ -83,6 +83,7 @@ function SDataService(sdataUri, username, password) {
         }
       }
 
+      debug('read: using URL: ' + url)
       return handleSdataResponse(_request.get(url), 200, callback)
     },
 
