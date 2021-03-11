@@ -71,6 +71,16 @@ Note that if you pass both a where string and a `where` key in the query args, t
     });
 ```
 
+If the sdata server returns an error diagnostic, the error will be an SDataError
+instance (lib/SDataError) with the following properties:
+
+ - applicationCode (internal details including the slxErrorId)
+ - message
+ - payloadPath
+ - sdataCode (usually "ApplicationDiagnosis")
+ - severity (usually "Error")
+ - stackTrace  (the one thrown by the server, not the Javascript stack)
+
 Usage with promises
 -------------------
 
